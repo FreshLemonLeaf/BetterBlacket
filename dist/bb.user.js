@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BetterBlacket
 // @description  the best client mod for blacket.
-// @version      3.0.1.0
+// @version      3.0.1.1
 // @icon         https://blacket.org/content/logo.png
 
 // @author       Death / VillainsRule
@@ -2966,7 +2966,7 @@ const friends = async (...args) => {
       });
       break;
     default:
-      bb.plugins.deafbot.send(`Subcommands: **list** ~ **add** ~ **remove** ~ **check**`);
+      bb.plugins.deafbot.send(`Subcommands: **list** ~ **request** ~ **accept** ~ **remove** ~ **check**`);
       break;
   }
 };

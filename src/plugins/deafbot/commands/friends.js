@@ -46,7 +46,7 @@ export default async (...args) => {
             break;
 
         default:
-            bb.plugins.deafbot.send(`Subcommands: **list** ~ **add** ~ **remove** ~ **check**`);
+            bb.plugins.deafbot.send(`Subcommands: **list** ~ **request** ~ **accept** ~ **remove** ~ **check**`);
             break;
     };
 };
