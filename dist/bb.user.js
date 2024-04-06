@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BetterBlacket
 // @description  the best client mod for blacket.
-// @version      3.0.0a
+// @version      3.0.1.0
 // @icon         https://blacket.org/content/logo.png
 
 // @author       Death / VillainsRule
@@ -2220,7 +2220,7 @@ const devs = {
     id: "0"
   }
 };
-const index$e = () => createPlugin({
+const index$f = () => createPlugin({
   title: "Advanced Opener",
   description: "a better way to open packs.",
   author: devs.thonk,
@@ -2440,8 +2440,8 @@ const index$e = () => createPlugin({
     window.onresize = () => modal.style.top = modal.style.left = "";
   }
 });
-const __vite_glob_0_0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$e }, Symbol.toStringTag, { value: "Module" }));
-const index$d = () => createPlugin({
+const __vite_glob_0_0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$f }, Symbol.toStringTag, { value: "Module" }));
+const index$e = () => createPlugin({
   title: "Bazaar Sniper",
   description: "pew pew! sniped right off the bazaar!",
   author: devs.thonk,
@@ -2457,23 +2457,19 @@ const index$d = () => createPlugin({
           if (!!!blookData || blookData.price < bazaarItem.price || bazaarItem.seller === blacket.user.username)
             return;
           axios.post("/worker/bazaar/buy", { id: bazaarItem.id }).then((purchase) => {
-            if (purchase.data.error) {
-              console.log(`[Bazaar Sniper] Error sniping Blook`, bazaarItem, purchase);
-              alert(`Failed to snipe Blook ${bazaarItem.item}.
+            if (purchase.data.error)
+              return console.log(`[Bazaar Sniper] Error sniping Blook`, bazaarItem, purchase);
+            console.log(`[Bazaar Sniper] Sniped a blook!`, bazaarItem);
+            alert(`Sniped Blook ${bazaarItem.item} from seller ${bazaarItem.seller} with price ${bazaarItem.price}!
 Check the console for more information.`);
-            } else {
-              console.log(`[Bazaar Sniper] Sniped a blook!`, bazaarItem);
-              alert(`Sniped Blook ${bazaarItem.item} from seller ${bazaarItem.seller} with price ${bazaarItem.price}!
-Check the console for more information.`);
-            }
           });
         });
       });
     }, 1e3);
   }
 });
-const __vite_glob_0_1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$d }, Symbol.toStringTag, { value: "Module" }));
-const index$c = () => createPlugin({
+const __vite_glob_0_1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$e }, Symbol.toStringTag, { value: "Module" }));
+const index$d = () => createPlugin({
   title: "Better Chat",
   description: "enhances your chatting experience!",
   author: devs.thonk,
@@ -2555,8 +2551,8 @@ const index$c = () => createPlugin({
         }
     `
 });
-const __vite_glob_0_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$c }, Symbol.toStringTag, { value: "Module" }));
-const index$b = () => createPlugin({
+const __vite_glob_0_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$d }, Symbol.toStringTag, { value: "Module" }));
+const index$c = () => createPlugin({
   title: "Blook Utilities",
   description: "enhances the blooks page like never before.",
   author: devs.thonk,
@@ -2800,8 +2796,8 @@ const index$b = () => createPlugin({
     };
   }
 });
-const __vite_glob_0_3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$b }, Symbol.toStringTag, { value: "Module" }));
-const index$a = () => createPlugin({
+const __vite_glob_0_3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$c }, Symbol.toStringTag, { value: "Module" }));
+const index$b = () => createPlugin({
   title: "Chat on Clans",
   description: "disables the special chat page function when viewing your clan.",
   author: devs.thonk,
@@ -2825,7 +2821,7 @@ const index$a = () => createPlugin({
     }
   ]
 });
-const __vite_glob_0_4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$a }, Symbol.toStringTag, { value: "Module" }));
+const __vite_glob_0_4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$b }, Symbol.toStringTag, { value: "Module" }));
 const badges = async (...args) => {
   if (args[0])
     axios.get("/worker2/user/" + args[0]).then((u) => {
@@ -2998,7 +2994,7 @@ const level = async (...args) => {
     bb.plugins.deafbot.send(`Your level: ${blacket.user.level || calculate(blacket.user.exp)}`);
 };
 const myclan = async () => {
-  axios.get("/worker/clans", (clan2) => {
+  axios.get("/worker/clans").then((clan2) => {
     if (clan2.data.error)
       return bb.plugins.deafbot.send(`Error fetching your clan: **${clan2.data.reason}**`);
     let clanData = clan2.data.clan;
@@ -3024,8 +3020,8 @@ const trade = async (...args) => {
     return bb.plugins.deafbot.send(`Who are you trying to trade, yourself?`);
   axios.get("/worker2/user/" + args[0]).then((u) => {
     if (u.data.error)
-      return bb.plugins.deafbot.send(`Error fetching user ${args[0]}: **${u.reason}**`);
-    axios.post("/worker/trades/requests/send", { user: u.user.id.toString() }).then((r) => {
+      return bb.plugins.deafbot.send(`Error fetching user ${args[0]}: **${u.data.reason}**`);
+    axios.post("/worker/trades/requests/send", { user: u.data.user.id.toString() }).then((r) => {
       if (r.data.error)
         bb.plugins.deafbot.send(`Error sending trade request to ${u.data.user.username}: **${r.data.reason}**`);
       else
@@ -3046,7 +3042,7 @@ const commands$1 = commands = {
   tokens,
   trade
 };
-const index$9 = () => {
+const index$a = () => {
   bb.plugins.deafbot = {
     send: (msg) => {
       let prefix = "**$ sudo node deafbot.js** > > > ";
@@ -3086,8 +3082,8 @@ const index$9 = () => {
     ]
   });
 };
-const __vite_glob_0_5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$9 }, Symbol.toStringTag, { value: "Module" }));
-const index$8 = () => createPlugin({
+const __vite_glob_0_5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$a }, Symbol.toStringTag, { value: "Module" }));
+const index$9 = () => createPlugin({
   title: "Double Leaderboard",
   description: "see both leaderboards together.",
   author: devs.thonk,
@@ -3137,8 +3133,8 @@ const index$8 = () => createPlugin({
         </style>`);
   }
 });
-const __vite_glob_0_6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$8 }, Symbol.toStringTag, { value: "Module" }));
-const index$7 = () => createPlugin({
+const __vite_glob_0_6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$9 }, Symbol.toStringTag, { value: "Module" }));
+const index$8 = () => createPlugin({
   title: "Extra Stats",
   description: "gives you extra stats for users.",
   author: devs.thonk,
@@ -3188,7 +3184,28 @@ const index$7 = () => createPlugin({
         `);
   }
 });
-const __vite_glob_0_7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$7 }, Symbol.toStringTag, { value: "Module" }));
+const __vite_glob_0_7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$8 }, Symbol.toStringTag, { value: "Module" }));
+const index$7 = () => createPlugin({
+  title: "Highlight Rarity",
+  description: "displays the rarity of Bazaar blooks.",
+  author: devs.thonk,
+  patches: [
+    {
+      file: "/lib/js/bazaar.js",
+      replacement: [
+        {
+          match: /"\/content\/blooks\/Error\.png"\}" /,
+          replace: `"/content/blooks/Error.png"}" style="filter: drop-shadow(0 0 7px \${blacket.rarities[blacket.blooks[blook].rarity].color});" `
+        },
+        {
+          match: /class="styles__bazaarItemImage___KriA4-camelCase" /,
+          replace: `class="styles__bazaarItemImage___KriA4-camelCase" \${blacket.blooks[listing.item] ? \`style="filter: drop-shadow(0 0 7px \${blacket.rarities[blacket.blooks[listing.item].rarity].color});"\` : ''} `
+        }
+      ]
+    }
+  ]
+});
+const __vite_glob_0_8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$7 }, Symbol.toStringTag, { value: "Module" }));
 const index$6 = () => createPlugin({
   title: "Internals",
   description: "the internals of BetterBlacket.",
@@ -3854,7 +3871,7 @@ const index$6 = () => createPlugin({
     });
   }
 });
-const __vite_glob_0_8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$6 }, Symbol.toStringTag, { value: "Module" }));
+const __vite_glob_0_9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$6 }, Symbol.toStringTag, { value: "Module" }));
 const index$5 = () => createPlugin({
   title: "Message Logger",
   description: "see deleted messages like a staff would :)",
@@ -3872,7 +3889,7 @@ const index$5 = () => createPlugin({
     }
   ]
 });
-const __vite_glob_0_9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$5 }, Symbol.toStringTag, { value: "Module" }));
+const __vite_glob_0_10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$5 }, Symbol.toStringTag, { value: "Module" }));
 const index$4 = () => createPlugin({
   title: "No Chat Ping",
   description: "prevents you from being pinged in chat.",
@@ -3903,7 +3920,7 @@ const index$4 = () => createPlugin({
     }
   ]
 });
-const __vite_glob_0_10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$4 }, Symbol.toStringTag, { value: "Module" }));
+const __vite_glob_0_11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$4 }, Symbol.toStringTag, { value: "Module" }));
 const index$3 = () => createPlugin({
   title: "No Devtools Warning",
   description: "disables the warning in the console.",
@@ -3920,7 +3937,7 @@ const index$3 = () => createPlugin({
     }
   ]
 });
-const __vite_glob_0_11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$3 }, Symbol.toStringTag, { value: "Module" }));
+const __vite_glob_0_12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$3 }, Symbol.toStringTag, { value: "Module" }));
 const index$2 = () => createPlugin({
   title: "NOtification Block",
   description: "stops all desktop notifications.",
@@ -3941,7 +3958,7 @@ const index$2 = () => createPlugin({
     }
   ]
 });
-const __vite_glob_0_12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$2 }, Symbol.toStringTag, { value: "Module" }));
+const __vite_glob_0_13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$2 }, Symbol.toStringTag, { value: "Module" }));
 const index$1 = () => createPlugin({
   title: "Quick CSS",
   description: "edit CSS for the game and have it applied instantly.",
@@ -4068,7 +4085,7 @@ const index$1 = () => createPlugin({
     };
   }
 });
-const __vite_glob_0_13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$1 }, Symbol.toStringTag, { value: "Module" }));
+const __vite_glob_0_14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index$1 }, Symbol.toStringTag, { value: "Module" }));
 const index = () => createPlugin({
   title: "Staff Tags",
   description: "gives staff who speak in chat a special tag.",
@@ -4105,7 +4122,7 @@ const index = () => createPlugin({
     }
   ]
 });
-const __vite_glob_0_14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index }, Symbol.toStringTag, { value: "Module" }));
+const __vite_glob_0_15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({ __proto__: null, default: index }, Symbol.toStringTag, { value: "Module" }));
 const patcher = () => {
   let blacklistedKeywords = ["cdn-cgi", "jquery", "jscolor"];
   let scripts = [...document.querySelectorAll("script")].filter((script) => !blacklistedKeywords.some((k) => script.src.includes(k))).filter((script) => script.src.includes(location.host)).map((script) => script.src);
@@ -4181,13 +4198,14 @@ const loadPlugins = async () => {
     "../plugins/deafbot/index.js": __vite_glob_0_5,
     "../plugins/doubleleaderboard/index.js": __vite_glob_0_6,
     "../plugins/extrastats/index.js": __vite_glob_0_7,
-    "../plugins/internals/index.js": __vite_glob_0_8,
-    "../plugins/messagelogger/index.js": __vite_glob_0_9,
-    "../plugins/nochatping/index.js": __vite_glob_0_10,
-    "../plugins/nodevtoolswarn/index.js": __vite_glob_0_11,
-    "../plugins/notificationblock/index.js": __vite_glob_0_12,
-    "../plugins/quickcss/index.js": __vite_glob_0_13,
-    "../plugins/stafftags/index.js": __vite_glob_0_14
+    "../plugins/highlightrarity/index.js": __vite_glob_0_8,
+    "../plugins/internals/index.js": __vite_glob_0_9,
+    "../plugins/messagelogger/index.js": __vite_glob_0_10,
+    "../plugins/nochatping/index.js": __vite_glob_0_11,
+    "../plugins/nodevtoolswarn/index.js": __vite_glob_0_12,
+    "../plugins/notificationblock/index.js": __vite_glob_0_13,
+    "../plugins/quickcss/index.js": __vite_glob_0_14,
+    "../plugins/stafftags/index.js": __vite_glob_0_15
   })).map((b) => b?.default()));
   console.log(`Detected readyState ${document.readyState}. Running onLoad listeners...`);
   document.addEventListener("DOMContentLoaded", () => {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default async () => {
-    axios.get('/worker/clans', (clan) => {
+    axios.get('/worker/clans').then((clan) => {
         if (clan.data.error) return bb.plugins.deafbot.send(`Error fetching your clan: **${clan.data.reason}**`);
 
         let clanData = clan.data.clan;

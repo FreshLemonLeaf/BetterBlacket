@@ -18,13 +18,10 @@ export default () => createPlugin({
                     if (!(!!blookData) || (blookData.price < bazaarItem.price) || bazaarItem.seller === blacket.user.username) return;
 
                     axios.post('/worker/bazaar/buy', { id: bazaarItem.id }).then((purchase) => {
-                        if (purchase.data.error) {
-                            console.log(`[Bazaar Sniper] Error sniping Blook`, bazaarItem, purchase);
-                            alert(`Failed to snipe Blook ${bazaarItem.item}.\nCheck the console for more information.`);
-                        } else {
-                            console.log(`[Bazaar Sniper] Sniped a blook!`, bazaarItem);
-                            alert(`Sniped Blook ${bazaarItem.item} from seller ${bazaarItem.seller} with price ${bazaarItem.price}!\nCheck the console for more information.`);
-                        };
+                        if (purchase.data.error) return console.log(`[Bazaar Sniper] Error sniping Blook`, bazaarItem, purchase);
+                        
+                        console.log(`[Bazaar Sniper] Sniped a blook!`, bazaarItem);
+                        alert(`Sniped Blook ${bazaarItem.item} from seller ${bazaarItem.seller} with price ${bazaarItem.price}!\nCheck the console for more information.`);
                     });
                 });
             });
