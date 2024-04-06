@@ -1,0 +1,21 @@
+// ==UserScript==
+// @name         BetterBlacket
+// @description  the best client mod for blacket.
+// @version      3.0.0-dev
+// @icon         https://blacket.org/content/logo.png
+
+// @author       Death / VillainsRule
+// @namespace    https://bb.villainsrule.xyz
+
+// @match        *://blacket.org/*
+// @match        *://dev.blacket.org/*
+
+// @grant        none
+// @run-at       document-start
+// ==/UserScript==
+
+/* eslint-disable */
+
+(() => {
+    {{code}}
+})();

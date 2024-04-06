@@ -1,0 +1,33 @@
+import axios from 'axios';
+
+import createPlugin from 'utils/createPlugin.js';
+import { devs } from '../../constants.js';
+
+export default () => createPlugin({
+    title: 'Bazaar Sniper',
+    description: 'pew pew! sniped right off the bazaar!',
+    author: devs.thonk,
+    onStart: () => {
+        let checkBazaar = setInterval(() => {
+            if (blacket.login || blacket.config.path === '') return clearInterval(checkBazaar);
+            if (!blacket.user) return;
+
+            axios.get('/worker/bazaar').then((bazaar) => {
+                bazaar.data.bazaar.forEach((bazaarItem) => {
+                    let blookData = blacket.blooks[bazaarItem.item];
+                    if (!(!!blookData) || (blookData.price < bazaarItem.price) || bazaarItem.seller === blacket.user.username) return;
+
+                    axios.post('/worker/bazaar/buy', { id: bazaarItem.id }).then((purchase) => {
+                        if (purchase.data.error) {
+                            console.log(`[Bazaar Sniper] Error sniping Blook`, bazaarItem, purchase);
+                            alert(`Failed to snipe Blook ${bazaarItem.item}.\nCheck the console for more information.`);
+                        } else {
+                            console.log(`[Bazaar Sniper] Sniped a blook!`, bazaarItem);
+                            alert(`Sniped Blook ${bazaarItem.item} from seller ${bazaarItem.seller} with price ${bazaarItem.price}!\nCheck the console for more information.`);
+                        };
+                    });
+                });
+            });
+        }, 1000);
+    }
+});
