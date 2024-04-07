@@ -11,7 +11,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /\$\{badges\}/,
-                    replace: `\${badges} \${['Owner', 'Admin', 'Moderator', 'Helper'].includes(data.author.role) || bb.plugins.settings['Staff Tags']['Show Artists'] && data.author.role === 'Artist' || bb.plugins.settings['Staff Tags']['Show Testers'] && data.author.role === 'Tester' ? \`<span class="bb_roleTag">\${data.author.role}</span>\` : ''}`
+                    replace: `\${badges} \${['Owner', 'Admin', 'Moderator', 'Helper'].includes(data.author.role) || bb.plugins.settings['Staff Tags']?.['Show Artists'] && data.author.role === 'Artist' || bb.plugins.settings['Staff Tags']?.['Show Testers'] && data.author.role === 'Tester' ? \`<span class="bb_roleTag">\${data.author.role}</span>\` : ''}`
                 }
             ]
         }

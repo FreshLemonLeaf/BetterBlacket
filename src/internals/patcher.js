@@ -6,18 +6,21 @@ export default () => {
         .filter(script => !blacklistedKeywords.some(k => script.src.includes(k)))
         .filter(script => script.src.includes(location.host))
         .map(script => script.src);
+    let patched = [];
 
-    const observer = new MutationObserver(mutations => {
+    const observer = new MutationObserver((mutations) => {
         mutations.forEach(mutation => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
                 mutation.addedNodes.forEach(async (node) => {
-                    if (node.tagName === 'SCRIPT' && scripts.includes(node.src)) {
-                        node.type = 'javascript/blocked';
+                    if (node.tagName === 'SCRIPT' && scripts.includes(node.src) && !node.getAttribute('__nopatch') && !patched.includes(node.src)) {
+                        let src = node.src;
+                        patched.push(node.src);
+                        node.removeAttribute('src');
 
                         try {
-                            let { data } = await axios.get(node.src);
+                            let { data } = await axios.get(src);
 
-                            let filePatches = bb.patches.filter((e) => e.file === node.src.replace(location.origin, ''));
+                            let filePatches = bb.patches.filter((e) => src.replace(location.origin, '').startsWith(e.file));
 
                             for (const patch of filePatches) for (const replacement of patch.replacement) {
                                 if (replacement.condition && !replacement.condition()) continue;
@@ -32,16 +35,19 @@ export default () => {
                             };
 
                             const url = URL.createObjectURL(new Blob([
-                                `// ${node.src.replace(location.origin, '')}${filePatches.map(p => p.replacement).flat().length >= 1 ? ` - Patched by ${filePatches.map(p => p.plugin).join(', ')}` : ``}\n`,
+                                `// ${src.replace(location.origin, '')}${filePatches.map(p => p.replacement).flat().length >= 1 ? ` - Patched by ${filePatches.map(p => p.plugin).join(', ')}` : ``}\n`,
                                 data
                             ]));
 
-                            node.type = 'text/javascript';
-                            node.src = url;
+                            console.log(`Patched file! File:\n${src}\nPatched data:\n${url}`);
 
-                            console.log(`Patched '${node.src}'.`);
+                            let script = document.createElement('script');
+                            script.src = url;
+                            script.setAttribute('__nopatch', true);
+                            script.setAttribute('__src', src);
+                            document.head.appendChild(script);
                         } catch (error) {
-                            console.error(`Error patching ${node.src}, ignoring file.`, error);
+                            console.error(`Error patching ${node.src || src}, ignoring file.`, error);
                         };
                     };
                 });
@@ -53,7 +59,7 @@ export default () => {
         childList: true,
         subtree: true
     });
-    
+
     let activeStyles = Object.entries(bb.plugins.styles).filter((style) => bb.plugins.active.includes(style[0])).map(s => s[1]);
     document.head.insertAdjacentHTML('beforeend', `<style>${activeStyles.join('\n\n')}</style>`);
 
