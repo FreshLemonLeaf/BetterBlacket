@@ -11,7 +11,7 @@ window.bb = {
     plugins: {
         list: [],
         settings: {},
-        styles: [],
+        styles: {},
         internals: {
             pendingChanges: false
         }

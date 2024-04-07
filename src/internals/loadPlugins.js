@@ -21,9 +21,13 @@ export default async () => {
         });
     });
 
-    if (document.readyState !== 'loading' && !contentLoaded) bb.plugins.list.forEach((plugin) => {
-        if (pluginData.active.includes(plugin.title) || plugin.required) plugin.onLoad?.();
-    });
+    if (document.readyState !== 'loading' && !contentLoaded) {
+        contentLoaded = true;
+        
+        bb.plugins.list.forEach((plugin) => {
+            if (pluginData.active.includes(plugin.title) || plugin.required) plugin.onLoad?.();
+        });
+    };
 
     eventManager.subscribe('pageInit', () => {
         console.log(`Plugins got pageInit. Starting plugins...`);
@@ -39,7 +43,7 @@ export default async () => {
         }));
     });
 
-    bb.plugins.active = pluginData.active;
+    bb.plugins.active = [...pluginData.active, ...bb.plugins.list.filter(p => p.required).map(p => p.title)];
     bb.plugins.settings = pluginData.settings;
 
     console.log('Plugin data loaded. Starting patcher...');

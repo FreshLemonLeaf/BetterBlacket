@@ -1,14 +1,17 @@
 // ==UserScript==
 // @name         BetterBlacket
 // @description  the best client mod for blacket.
-// @version      3.0.1.1
+// @version      3.0.2.0
 // @icon         https://blacket.org/content/logo.png
 
 // @author       Death / VillainsRule
 // @namespace    https://bb.villainsrule.xyz
 
 // @match        *://blacket.org/*
-// @match        *://dev.blacket.org/*
+// @match        *://blacket.xotic.org/*
+// @match        *://blacket.monkxy.com/*
+// @match        *://blacket.zastix.club/*
+// @match        *://dashboard.iblooket.com/*
 
 // @grant        none
 // @run-at       document-start
@@ -16,6 +19,4 @@
 
 /* eslint-disable */
 
-(() => {
-    {{code}}
-})();
+{{code}}

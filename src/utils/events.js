@@ -1,3 +1,8 @@
+/*
+    Full credit is attributed to @zastlx on Github & @notzastix on Discord.
+    Thank you for the help on BetterBlacket <3
+*/
+
 class EventManager {
     #_subscriptions = new Map();
 

@@ -53,8 +53,9 @@ export default () => {
         childList: true,
         subtree: true
     });
-
-    document.head.insertAdjacentHTML('beforeend', `<style>${bb.plugins.styles.join('\n\n')}</style>`);
+    
+    let activeStyles = Object.entries(bb.plugins.styles).filter((style) => bb.plugins.active.includes(style[0])).map(s => s[1]);
+    document.head.insertAdjacentHTML('beforeend', `<style>${activeStyles.join('\n\n')}</style>`);
 
     /*
         Please do not remove this.

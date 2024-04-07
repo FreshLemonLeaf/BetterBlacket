@@ -25,5 +25,5 @@ export default ({
     };
 
     bb.plugins.list.push(plugin);
-    if (!!styles) bb.plugins.styles.push(styles);
+    if (!!styles) bb.plugins.styles[title] = styles;
 };

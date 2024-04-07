@@ -1,14 +1,17 @@
 // ==UserScript==
 // @name         BetterBlacket
 // @description  the best client mod for blacket.
-// @version      3.0.1.1
+// @version      3.0.2.0
 // @icon         https://blacket.org/content/logo.png
 
 // @author       Death / VillainsRule
 // @namespace    https://bb.villainsrule.xyz
 
 // @match        *://blacket.org/*
-// @match        *://dev.blacket.org/*
+// @match        *://blacket.xotic.org/*
+// @match        *://blacket.monkxy.com/*
+// @match        *://blacket.zastix.club/*
+// @match        *://dashboard.iblooket.com/*
 
 // @grant        none
 // @run-at       document-start
@@ -16,8 +19,7 @@
 
 /* eslint-disable */
 
-(() => {
-    var __defProp = Object.defineProperty;
+var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
@@ -2204,7 +2206,7 @@ const createPlugin = ({
   };
   bb.plugins.list.push(plugin);
   if (!!styles)
-    bb.plugins.styles.push(styles);
+    bb.plugins.styles[title] = styles;
 };
 const devs = {
   thonk: {
@@ -4168,7 +4170,8 @@ const patcher = () => {
     childList: true,
     subtree: true
   });
-  document.head.insertAdjacentHTML("beforeend", `<style>${bb.plugins.styles.join("\n\n")}</style>`);
+  let activeStyles = Object.entries(bb.plugins.styles).filter((style) => bb.plugins.active.includes(style[0])).map((s) => s[1]);
+  document.head.insertAdjacentHTML("beforeend", `<style>${activeStyles.join("\n\n")}</style>`);
   setTimeout(() => {
     let mods = {
       "BetterBlacket v2": () => !!(window.pr || window.addCSS),
@@ -4217,11 +4220,13 @@ const loadPlugins = async () => {
         plugin.onLoad?.();
     });
   });
-  if (document.readyState !== "loading" && !contentLoaded)
+  if (document.readyState !== "loading" && !contentLoaded) {
+    contentLoaded = true;
     bb.plugins.list.forEach((plugin) => {
       if (pluginData.active.includes(plugin.title) || plugin.required)
         plugin.onLoad?.();
     });
+  }
   eventManager.subscribe("pageInit", () => {
     console.log(`Plugins got pageInit. Starting plugins...`);
     bb.plugins.list.forEach((plugin) => {
@@ -4236,7 +4241,7 @@ const loadPlugins = async () => {
         plugin: plug.title
       }));
   });
-  bb.plugins.active = pluginData.active;
+  bb.plugins.active = [...pluginData.active, ...bb.plugins.list.filter((p) => p.required).map((p) => p.title)];
   bb.plugins.settings = pluginData.settings;
   console.log("Plugin data loaded. Starting patcher...");
   patcher();
@@ -4300,7 +4305,7 @@ window.bb = {
   plugins: {
     list: [],
     settings: {},
-    styles: [],
+    styles: {},
     internals: {
       pendingChanges: false
     }
@@ -4315,5 +4320,3 @@ window.bb = {
 };
 console.log('Defined global "bb" variable:', bb, "Calling loadThemes()...");
 loadThemes();
-
-})();
