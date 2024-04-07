@@ -1,18 +1,19 @@
 import fs from 'fs';
-import { devs } from '../src/constants.js';
 
 let plugins = [];
 
-[...fs.readdirSync('./src/plugins')].forEach((file) => {
-    let raw = fs.readFileSync('./src/plugins/' + file + '/index.js', 'utf8');
+await Promise.all([...fs.readdirSync('./src/plugins')].map(async (file) => {
+    let plugin = (await import(`../src/plugins/${file}/index.js`)).default();
+    if (plugin.required || plugin.disabled) return;
 
     plugins.push({
-        title: raw.match(/title: '([^']*)'/m)[1],
-        description: raw.match(/description: '([^']*)'/m)[1],
-        author: devs[raw.match(/author: devs\.([\w.]+)/m)[1]],
+        title: plugin.title,
+        description: plugin.description,
+        authors: plugin.authors,
+        settings: plugin.settings,
         path: file
     });
-});
+}));
 
 fs.writeFileSync('./dist/pluginData.json', JSON.stringify(plugins));
 

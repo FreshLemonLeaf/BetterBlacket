@@ -1,12 +1,10 @@
 import axios from 'axios';
-
-import createPlugin from 'utils/createPlugin.js';
-import { devs } from '../../constants.js';
+import createPlugin from '#utils/createPlugin';
 
 export default () => createPlugin({
     title: 'Bazaar Sniper',
     description: 'pew pew! sniped right off the bazaar!',
-    author: devs.thonk,
+    authors: [{ name: 'Death', avatar: 'https://i.imgur.com/PrvNWub.png', url: 'https://villainsrule.xyz' }],
     onStart: () => {
         let checkBazaar = setInterval(() => {
             if (blacket.login || blacket.config.path === '') return clearInterval(checkBazaar);
@@ -19,7 +17,7 @@ export default () => createPlugin({
 
                     axios.post('/worker/bazaar/buy', { id: bazaarItem.id }).then((purchase) => {
                         if (purchase.data.error) return console.log(`[Bazaar Sniper] Error sniping Blook`, bazaarItem, purchase);
-                        
+
                         console.log(`[Bazaar Sniper] Sniped a blook!`, bazaarItem);
                         alert(`Sniped Blook ${bazaarItem.item} from seller ${bazaarItem.seller} with price ${bazaarItem.price}!\nCheck the console for more information.`);
                     });

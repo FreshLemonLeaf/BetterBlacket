@@ -1,10 +1,9 @@
-import { devs } from '../../constants.js';
-import createPlugin from 'utils/createPlugin.js';
+import createPlugin from '#utils/createPlugin';
 
 export default () => createPlugin({
     title: 'Quick CSS',
     description: 'edit CSS for the game and have it applied instantly.',
-    author: devs.thonk,
+    authors: [{ name: 'Death', avatar: 'https://i.imgur.com/PrvNWub.png', url: 'https://villainsrule.xyz' }],
     styles: `
         .bb_customCSSBox {
             position: relative;

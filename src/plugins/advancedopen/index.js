@@ -1,12 +1,10 @@
 import axios from 'axios';
-
-import createPlugin from 'utils/createPlugin.js';
-import { devs } from '../../constants.js';
+import createPlugin from '#utils/createPlugin';
 
 export default () => createPlugin({
     title: 'Advanced Opener',
     description: 'a better way to open packs.',
-    author: devs.thonk,
+    authors: [{ name: 'Death', avatar: 'https://i.imgur.com/PrvNWub.png', url: 'https://villainsrule.xyz' }],
     styles: `
         .bb_openModal {
             font-family: "Nunito", sans-serif;

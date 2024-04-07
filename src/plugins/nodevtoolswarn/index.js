@@ -1,10 +1,9 @@
-import { devs } from '../../constants.js';
-import createPlugin from 'utils/createPlugin.js';
+import createPlugin from '#utils/createPlugin';
 
 export default () => createPlugin({
     title: 'No Devtools Warning',
     description: 'disables the warning in the console.',
-    author: devs.thonk,
+    authors: [{ name: 'Death', avatar: 'https://i.imgur.com/PrvNWub.png', url: 'https://villainsrule.xyz' }],
     patches: [
         {
             file: '/lib/js/all.js',

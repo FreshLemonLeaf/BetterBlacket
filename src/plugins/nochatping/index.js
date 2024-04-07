@@ -1,10 +1,9 @@
-import { devs } from '../../constants.js';
-import createPlugin from 'utils/createPlugin.js';
+import createPlugin from '#utils/createPlugin';
 
 export default () => createPlugin({
     title: 'No Chat Ping',
     description: 'prevents you from being pinged in chat.',
-    author: devs.thonk,
+    authors: [{ name: 'Death', avatar: 'https://i.imgur.com/PrvNWub.png', url: 'https://villainsrule.xyz' }],
     patches: [
         {
             file: '/lib/js/game.js',

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BetterBlacket
 // @description  the best client mod for blacket.
-// @version      3.0.3.0
+// @version      3.0.4.0
 // @icon         https://blacket.org/content/logo.png
 
 // @author       Death / VillainsRule
@@ -12,6 +12,7 @@
 // @match        *://blacket.monkxy.com/*
 // @match        *://blacket.zastix.club/*
 // @match        *://dashboard.iblooket.com/*
+// @match        *://b.blooketis.life/*
 
 // @grant        none
 // @run-at       document-start

@@ -1,10 +1,9 @@
-import { devs } from '../../constants.js';
-import createPlugin from 'utils/createPlugin.js';
+import createPlugin from '#utils/createPlugin';
 
 export default () => createPlugin({
     title: 'Internals',
     description: 'the internals of BetterBlacket.',
-    author: devs.internal,
+    authors: [{ name: 'Internal' }],
     required: true,
     patches: [
         {
@@ -350,20 +349,22 @@ export default () => createPlugin({
             cursor: pointer;
         }
 
-        .bb_pluginAuthor {
+        .bb_pluginAuthors {
             display: flex;
             justify-content: center;
-            gap: 1vw;
             cursor: pointer;
             margin-top: 1vw;
+            margin-right: 6px;
             font-weight: bold;
         }
 
-        .bb_pluginAuthorAvatar {
-            height: 20px;
+        .bb_pluginAuthor {
+            height: 22px;
             border-radius: 50%;
+            margin-right: -6px;
+            border: 2px solid #3f3f3f;
         }
-        
+
         .bb_themeInfo {
             font-family: Nunito, sans-serif;
             line-height: 1.823vw;
@@ -638,10 +639,7 @@ export default () => createPlugin({
                         <div class="bb_bigModal">
                             <div class="bb_bigModalTitle">${p.title}</div>
                             <div class="bb_bigModalDescription">${p.description}</div>
-                            <div class="bb_pluginAuthor" onclick="window.open('${p.author.url}', '_blank')">
-                                <img class="bb_pluginAuthorAvatar" src="${p.author.avatar}" />
-                                ${p.author.name}
-                            </div>
+                            <div class="bb_pluginAuthors">${p.authors.map((a) => `<img src="${a.avatar}" onclick="window.open('${a.url}', '_blank')" class="bb_pluginAuthor" />`).join('')}</div>
                             <hr class="bb_bigModalDivider" />
                             <div class="bb_bigModalHeader">Settings</div>
                             ${p.settings.length ? `<div class="bb_pluginSettings">

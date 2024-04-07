@@ -1,11 +1,10 @@
-import { devs } from '../../constants.js';
-import createPlugin from 'utils/createPlugin.js';
+import createPlugin from '#utils/createPlugin';
 
 export default () => createPlugin({
     title: 'Message Logger',
-    description: 'see deleted messages like a staff would :)',
-    author: devs.thonk,
-    disabled: true,
+    description: 'view deleted messages like a staff would.',
+    authors: [{ name: 'Death', avatar: 'https://i.imgur.com/PrvNWub.png', url: 'https://villainsrule.xyz' }],
+    disabled: !0,
     patches: [
         {
             file: '/lib/js/game.js',

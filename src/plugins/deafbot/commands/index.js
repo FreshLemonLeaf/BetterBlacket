@@ -10,7 +10,7 @@ import settings from './settings.js';
 import tokens from './tokens.js';
 import trade from './trade.js';
 
-export default commands = {
+export default {
     badges,
     blocks,
     blooks,

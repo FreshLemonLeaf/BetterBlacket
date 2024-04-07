@@ -6,9 +6,12 @@ export default async () => {
     let pluginData = storage.get('bb_pluginData', true);
     let contentLoaded = false;
 
-    await Promise.all(Object.values(import.meta.glob('../plugins/*/index.js', {
-        eager: true
-    })).map(b => b?.default()));
+    await Promise.all(Object.values(import.meta.glob('../@(plugins|userplugins)/*/index.js', { eager: true })).map(async (pluginFile) => {
+        let plugin = pluginFile.default();
+
+        bb.plugins.list.push(plugin);
+        if (!!plugin.styles) bb.plugins.styles[plugin.title] = plugin.styles;
+    }));
 
     console.log(`Detected readyState ${document.readyState}. Running onLoad listeners...`);
 
@@ -23,7 +26,7 @@ export default async () => {
 
     if (document.readyState !== 'loading' && !contentLoaded) {
         contentLoaded = true;
-        
+
         bb.plugins.list.forEach((plugin) => {
             if (pluginData.active.includes(plugin.title) || plugin.required) plugin.onLoad?.();
         });
