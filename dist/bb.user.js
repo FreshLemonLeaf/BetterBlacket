@@ -2059,6 +2059,28 @@ axios.getAdapter = adapters.getAdapter;
 axios.HttpStatusCode = HttpStatusCode$1;
 axios.default = axios;
 const axios$1 = axios;
+class Events {
+  constructor() {
+    __privateAdd(this, __subscriptions, /* @__PURE__ */ new Map());
+    __publicField(this, "subscribe", (event, callback) => {
+      console.log(`Subscribed to event '${event}'.`);
+      if (typeof callback !== "function")
+        return console.warn("Events: Event callback must be a function.");
+      if (!__privateGet(this, __subscriptions).has(event))
+        __privateGet(this, __subscriptions).set(event, /* @__PURE__ */ new Set());
+      __privateGet(this, __subscriptions).get(event).add(callback);
+    });
+    __publicField(this, "dispatch", (event, payload) => {
+      console.log(`Dispatching event '${event}'.`);
+      if (__privateGet(this, __subscriptions).has(event))
+        __privateGet(this, __subscriptions).get(event).forEach((callback) => callback(payload));
+      else
+        console.warn(`Events: Event '${event}' does not exist.`);
+    });
+  }
+}
+__subscriptions = new WeakMap();
+const events = new Events();
 class Modal {
   constructor({
     title,
@@ -2157,28 +2179,6 @@ class Storage {
   }
 }
 const storage = new Storage();
-class EventManager {
-  constructor() {
-    __privateAdd(this, __subscriptions, /* @__PURE__ */ new Map());
-    __publicField(this, "subscribe", (event, callback) => {
-      console.log(`Subscribed to event '${event}'.`);
-      if (typeof callback !== "function")
-        return console.warn("EventManager: Event callback must be a function.");
-      if (!__privateGet(this, __subscriptions).has(event))
-        __privateGet(this, __subscriptions).set(event, /* @__PURE__ */ new Set());
-      __privateGet(this, __subscriptions).get(event).add(callback);
-    });
-    __publicField(this, "dispatch", (event, payload) => {
-      console.log(`Dispatching event '${event}'.`);
-      if (__privateGet(this, __subscriptions).has(event))
-        __privateGet(this, __subscriptions).get(event).forEach((callback) => callback(payload));
-      else
-        console.warn(`EventManager: Event '${event}' does not exist.`);
-    });
-  }
-}
-__subscriptions = new WeakMap();
-const eventManager = new EventManager();
 const createPlugin = ({
   title,
   description,
@@ -3376,7 +3376,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.stopLoading\(\);/,
-          replace: "blacket.stopLoading();bb.eventManager.dispatch('pageInit');"
+          replace: "blacket.stopLoading();bb.events.dispatch('pageInit');"
         },
         {
           match: /if \(blacket\.config\)/,
@@ -3389,7 +3389,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.htmlEncode\s*=\s*\(\s*s\s*\)\s*=>\s*{/,
-          replace: "bb.eventManager.dispatch('pageInit');blacket.htmlEncode = (s) => {"
+          replace: "bb.events.dispatch('pageInit');blacket.htmlEncode = (s) => {"
         },
         {
           match: /blacket\.config/,
@@ -3402,7 +3402,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.stopLoading\(\);/,
-          replace: "blacket.stopLoading();bb.eventManager.dispatch('pageInit');"
+          replace: "blacket.stopLoading();bb.events.dispatch('pageInit');"
         },
         {
           match: /blacket\.config/,
@@ -3415,7 +3415,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.setUser\(blacket\.user\)\;/,
-          replace: "blacket.setUser(blacket.user);bb.eventManager.dispatch('pageInit');"
+          replace: "blacket.setUser(blacket.user);bb.events.dispatch('pageInit');"
         },
         {
           match: /blacket\.user\s*&&\s*blacket\.friends/,
@@ -3428,7 +3428,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.stopLoading\(\);/,
-          replace: "blacket.stopLoading();bb.eventManager.dispatch('pageInit');"
+          replace: "blacket.stopLoading();bb.events.dispatch('pageInit');"
         },
         {
           match: /if \(blacket\.user\) \{/,
@@ -3441,7 +3441,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /\$\("#clanInvestmentsButton"\)\.click\(\(\) \=\> \{/,
-          replace: `bb.eventManager.dispatch('pageInit');$("#clanInvestmentsButton").click(() => {`
+          replace: `bb.events.dispatch('pageInit');$("#clanInvestmentsButton").click(() => {`
         },
         {
           match: /if \(blacket\.user\) \{/,
@@ -3458,7 +3458,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.stopLoading\(\)\;/,
-          replace: "blacket.stopLoading();bb.eventManager.dispatch('pageInit');"
+          replace: "blacket.stopLoading();bb.events.dispatch('pageInit');"
         },
         {
           match: /if \(blacket\.user\) \{/,
@@ -3471,7 +3471,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.showBuyItemModal =/,
-          replace: "bb.eventManager.dispatch('pageInit');blacket.showBuyItemModal ="
+          replace: "bb.events.dispatch('pageInit');blacket.showBuyItemModal ="
         },
         {
           match: /if \(blacket\.user\) \{/,
@@ -3484,7 +3484,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.appendBlooks\(\)\;/,
-          replace: "blacket.appendBlooks();bb.eventManager.dispatch('pageInit');"
+          replace: "blacket.appendBlooks();bb.events.dispatch('pageInit');"
         },
         {
           match: /if \(blacket\.user\) \{/,
@@ -3497,7 +3497,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /\}\);\s*blacket\.getBazaar\(\);/,
-          replace: "});blacket.getBazaar();bb.eventManager.dispatch('pageInit');"
+          replace: "});blacket.getBazaar();bb.events.dispatch('pageInit');"
         },
         {
           match: /if \(blacket\.user\) \{/,
@@ -3510,7 +3510,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.stopLoading\(\);\s*\}\s*else\s*setTimeout\(reset,\s*1\);/,
-          replace: "blacket.stopLoading();bb.eventManager.dispatch('pageInit');} else setTimeout(reset, 1);"
+          replace: "blacket.stopLoading();bb.events.dispatch('pageInit');} else setTimeout(reset, 1);"
         },
         {
           match: /if \(blacket\.user\) \{/,
@@ -3523,7 +3523,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /\$\(\"#tradeRequestsButton\"\).click\(\(\) \=\> \{/,
-          replace: `bb.eventManager.dispatch('pageInit');$("#tradeRequestsButton").click(() => {`
+          replace: `bb.events.dispatch('pageInit');$("#tradeRequestsButton").click(() => {`
         },
         {
           match: /if \(blacket\.user\) \{/,
@@ -3536,7 +3536,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /\$\("#buy1hBoosterButton"\)\.click\(\(\) => \{/,
-          replace: `bb.eventManager.dispatch('pageInit');$("#buy1hBoosterButton").click(() => {`
+          replace: `bb.events.dispatch('pageInit');$("#buy1hBoosterButton").click(() => {`
         },
         {
           match: /if \(blacket\.user\) \{/,
@@ -3549,7 +3549,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.stopLoading\(\)\;/,
-          replace: "blacket.stopLoading();bb.eventManager.dispatch('pageInit');"
+          replace: "blacket.stopLoading();bb.events.dispatch('pageInit');"
         },
         {
           match: /blacket\.config/,
@@ -3562,7 +3562,7 @@ const index$6 = () => createPlugin({
       replacement: [
         {
           match: /blacket\.appendBlooks\(\)\;/,
-          replace: "blacket.appendBlooks();bb.eventManager.dispatch('pageInit');"
+          replace: "blacket.appendBlooks();bb.events.dispatch('pageInit');"
         },
         {
           match: /blacket\.user\s*&&\s*blacket\.trade/,
@@ -3959,7 +3959,7 @@ const index$6 = () => createPlugin({
       }, true);
       bb.themes.reload();
     };
-    bb.eventManager.subscribe("themeUpdate", () => {
+    bb.events.subscribe("themeUpdate", () => {
       document.querySelector(".bb_themeValidation").innerHTML = `
                 ${bb.themes.list.map((t) => `<div class="bb_themeInfo" style="color: green;">${t.name} | ${t.url}</div>`).join("")}
                 ${bb.themes.broken.map((t) => `<div class="bb_themeInfo" style="color: red;">${t.url} - ${t.reason}</div>`).join("")}
@@ -4386,7 +4386,7 @@ const loadPlugins = async () => {
         plugin.onLoad?.();
     });
   }
-  eventManager.subscribe("pageInit", () => {
+  events.subscribe("pageInit", () => {
     console.log(`Plugins got pageInit. Starting plugins...`);
     bb.plugins.list.forEach((plugin) => {
       if (pluginData.active.includes(plugin.title) || plugin.required)
@@ -4437,14 +4437,14 @@ const loadThemes = async (single) => {
       });
       document.head.appendChild(themeStyle);
       console.log(`Loaded theme "${meta.name}".`);
-      bb.eventManager.dispatch("themeUpdate");
+      bb.events.dispatch("themeUpdate");
     }).catch((err) => {
       console.log("Failed to load theme: " + theme + " - ", err);
       bb.themes.broken.push({
         url: theme,
         reason: "Theme could not be loaded."
       });
-      bb.eventManager.dispatch("themeUpdate");
+      bb.events.dispatch("themeUpdate");
     });
   }
   if (single)
@@ -4458,6 +4458,7 @@ if (!storage.get("bb_themeData"))
   storage.set("bb_themeData", { active: [] }, true);
 window.bb = {
   axios: axios$1,
+  events,
   Modal,
   storage,
   plugins: {
@@ -4473,8 +4474,7 @@ window.bb = {
     broken: [],
     reload: () => loadThemes(true)
   },
-  patches: [],
-  eventManager
+  patches: []
 };
 console.log('Defined global "bb" variable:', bb, "Calling loadThemes()...");
 loadThemes();

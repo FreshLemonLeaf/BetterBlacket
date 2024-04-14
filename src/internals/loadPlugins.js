@@ -1,5 +1,5 @@
 import patcher from './patcher.js';
-import eventManager from 'utils/events.js';
+import events from 'utils/events.js';
 import storage from 'utils/storage.js';
 
 export default async () => {
@@ -32,7 +32,7 @@ export default async () => {
         });
     };
 
-    eventManager.subscribe('pageInit', () => {
+    events.subscribe('pageInit', () => {
         console.log(`Plugins got pageInit. Starting plugins...`);
         bb.plugins.list.forEach((plugin) => {
             if (pluginData.active.includes(plugin.title) || plugin.required) plugin.onStart?.();

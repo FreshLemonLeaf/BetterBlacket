@@ -38,14 +38,14 @@ export default async (single) => {
 
             document.head.appendChild(themeStyle);
             console.log(`Loaded theme "${meta.name}".`);
-            bb.eventManager.dispatch('themeUpdate');
+            bb.events.dispatch('themeUpdate');
         }).catch((err) => {
             console.log('Failed to load theme: ' + theme + ' - ', err);
             bb.themes.broken.push({
                 url: theme,
                 reason: 'Theme could not be loaded.'
             });
-            bb.eventManager.dispatch('themeUpdate');
+            bb.events.dispatch('themeUpdate');
         });
     };
 

@@ -15,6 +15,8 @@ await Promise.all([...fs.readdirSync('./src/plugins')].map(async (file) => {
     });
 }));
 
+plugins.sort((a, b) => a.title.localeCompare(b.title));
+
 fs.writeFileSync('./dist/pluginData.json', JSON.stringify(plugins));
 
 console.log('Generated!\n');

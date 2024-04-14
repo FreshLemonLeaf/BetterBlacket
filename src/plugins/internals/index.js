@@ -11,7 +11,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.stopLoading\(\);/,
-                    replace: 'blacket.stopLoading();bb.eventManager.dispatch(\'pageInit\');'
+                    replace: 'blacket.stopLoading();bb.events.dispatch(\'pageInit\');'
                 },
                 {
                     match: /if \(blacket\.config\)/,
@@ -24,7 +24,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.htmlEncode\s*=\s*\(\s*s\s*\)\s*=>\s*{/,
-                    replace: 'bb.eventManager.dispatch(\'pageInit\');blacket.htmlEncode = (s) => {'
+                    replace: 'bb.events.dispatch(\'pageInit\');blacket.htmlEncode = (s) => {'
                 },
                 {
                     match: /blacket\.config/,
@@ -37,7 +37,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.stopLoading\(\);/,
-                    replace: 'blacket.stopLoading();bb.eventManager.dispatch(\'pageInit\');'
+                    replace: 'blacket.stopLoading();bb.events.dispatch(\'pageInit\');'
                 },
                 {
                     match: /blacket\.config/,
@@ -50,7 +50,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.setUser\(blacket\.user\)\;/,
-                    replace: 'blacket.setUser(blacket.user);bb.eventManager.dispatch(\'pageInit\');'
+                    replace: 'blacket.setUser(blacket.user);bb.events.dispatch(\'pageInit\');'
                 },
                 {
                     match: /blacket\.user\s*&&\s*blacket\.friends/,
@@ -63,7 +63,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.stopLoading\(\);/,
-                    replace: 'blacket.stopLoading();bb.eventManager.dispatch(\'pageInit\');'
+                    replace: 'blacket.stopLoading();bb.events.dispatch(\'pageInit\');'
                 },
                 {
                     match: /if \(blacket\.user\) \{/,
@@ -76,7 +76,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /\$\("#clanInvestmentsButton"\)\.click\(\(\) \=\> \{/,
-                    replace: 'bb.eventManager.dispatch(\'pageInit\');$("#clanInvestmentsButton").click(() => {'
+                    replace: 'bb.events.dispatch(\'pageInit\');$("#clanInvestmentsButton").click(() => {'
                 },
                 {
                     match: /if \(blacket\.user\) \{/,
@@ -93,7 +93,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.stopLoading\(\)\;/,
-                    replace: 'blacket.stopLoading();bb.eventManager.dispatch(\'pageInit\');'
+                    replace: 'blacket.stopLoading();bb.events.dispatch(\'pageInit\');'
                 },
                 {
                     match: /if \(blacket\.user\) \{/,
@@ -106,7 +106,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.showBuyItemModal =/,
-                    replace: 'bb.eventManager.dispatch(\'pageInit\');blacket.showBuyItemModal ='
+                    replace: 'bb.events.dispatch(\'pageInit\');blacket.showBuyItemModal ='
                 },
                 {
                     match: /if \(blacket\.user\) \{/,
@@ -119,7 +119,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.appendBlooks\(\)\;/,
-                    replace: 'blacket.appendBlooks();bb.eventManager.dispatch(\'pageInit\');'
+                    replace: 'blacket.appendBlooks();bb.events.dispatch(\'pageInit\');'
                 },
                 {
                     match: /if \(blacket\.user\) \{/,
@@ -132,7 +132,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /\}\);\s*blacket\.getBazaar\(\);/,
-                    replace: '});blacket.getBazaar();bb.eventManager.dispatch(\'pageInit\');'
+                    replace: '});blacket.getBazaar();bb.events.dispatch(\'pageInit\');'
                 },
                 {
                     match: /if \(blacket\.user\) \{/,
@@ -145,7 +145,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.stopLoading\(\);\s*\}\s*else\s*setTimeout\(reset,\s*1\);/,
-                    replace: 'blacket.stopLoading();bb.eventManager.dispatch(\'pageInit\');} else setTimeout(reset, 1);'
+                    replace: 'blacket.stopLoading();bb.events.dispatch(\'pageInit\');} else setTimeout(reset, 1);'
                 },
                 {
                     match: /if \(blacket\.user\) \{/,
@@ -158,7 +158,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /\$\(\"#tradeRequestsButton\"\).click\(\(\) \=\> \{/,
-                    replace: 'bb.eventManager.dispatch(\'pageInit\');$("#tradeRequestsButton").click(() => {'
+                    replace: 'bb.events.dispatch(\'pageInit\');$("#tradeRequestsButton").click(() => {'
                 },
                 {
                     match: /if \(blacket\.user\) \{/,
@@ -171,7 +171,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /\$\("#buy1hBoosterButton"\)\.click\(\(\) => \{/,
-                    replace: 'bb.eventManager.dispatch(\'pageInit\');$("#buy1hBoosterButton").click(() => {'
+                    replace: 'bb.events.dispatch(\'pageInit\');$("#buy1hBoosterButton").click(() => {'
                 },
                 {
                     match: /if \(blacket\.user\) \{/,
@@ -184,7 +184,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.stopLoading\(\)\;/,
-                    replace: 'blacket.stopLoading();bb.eventManager.dispatch(\'pageInit\');'
+                    replace: 'blacket.stopLoading();bb.events.dispatch(\'pageInit\');'
                 },
                 {
                     match: /blacket\.config/,
@@ -197,7 +197,7 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /blacket\.appendBlooks\(\)\;/,
-                    replace: 'blacket.appendBlooks();bb.eventManager.dispatch(\'pageInit\');'
+                    replace: 'blacket.appendBlooks();bb.events.dispatch(\'pageInit\');'
                 },
                 {
                     match: /blacket\.user\s*&&\s*blacket\.trade/,
@@ -606,7 +606,7 @@ export default () => createPlugin({
             bb.themes.reload();
         };
 
-        bb.eventManager.subscribe('themeUpdate', () => {
+        bb.events.subscribe('themeUpdate', () => {
             document.querySelector('.bb_themeValidation').innerHTML = `
                 ${bb.themes.list.map(t => `<div class="bb_themeInfo" style="color: green;">${t.name} | ${t.url}</div>`).join('')}
                 ${bb.themes.broken.map(t => `<div class="bb_themeInfo" style="color: red;">${t.url} - ${t.reason}</div>`).join('')}

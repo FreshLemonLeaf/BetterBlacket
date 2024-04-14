@@ -1,14 +1,15 @@
 import axios from 'axios';
 
+import events from 'utils/events.js';
 import Modal from 'utils/modal.js';
 import storage from 'utils/storage.js';
-import eventManager from 'utils/events.js';
 
 if (!storage.get('bb_pluginData')) storage.set('bb_pluginData', { active: [], settings: {} }, true);
 if (!storage.get('bb_themeData')) storage.set('bb_themeData', { active: [] }, true);
 
 window.bb = {
     axios,
+    events,
     Modal,
     storage,
     plugins: {
@@ -24,8 +25,7 @@ window.bb = {
         broken: [],
         reload: () => loadThemes(true)
     },
-    patches: [],
-    eventManager
+    patches: []
 };
 
 console.log('Defined global "bb" variable:', bb, 'Calling loadThemes()...');
