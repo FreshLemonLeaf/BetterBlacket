@@ -83,8 +83,8 @@ export default () => createPlugin({
                     replace: 'if (window?.blacket?.user) {'
                 },
                 {
-                    match: /!blacket\.items\[item\.item\]/,
-                    replace: `!blacket.items[item.item] || !blacket.clan.members.find(member => member.id == item.user)`
+                    match: /item.user\).avatar/,
+                    replace: `item.user\)?.avatar || '/content/blooks/Error.png'`
                 }
             ]
         },
@@ -224,6 +224,10 @@ export default () => createPlugin({
                 {
                     match: /blacket\.config\s*&&\s*blacket\.socket/,
                     replace: 'window?.blacket?.config && window?.blacket?.socket'
+                },
+                {
+                    match: /data\.author\.badges = \[/,
+                    replace: `if (typeof data.author.badges !== 'object' && !data?.author?.badges?.length) data.author.badges = [`
                 }
             ]
         }

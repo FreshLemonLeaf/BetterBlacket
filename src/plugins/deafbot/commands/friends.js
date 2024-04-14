@@ -45,6 +45,34 @@ export default async (...args) => {
             });
             break;
 
+        case 'requests':
+        case 'incoming':
+        case 'pending':
+        case 'recieving':
+            axios.get('/worker2/friends').then((f) => {
+                if (f.data.error) bb.plugins.deafbot.send(`Error fetching friends: **${f.data.reason}**`);
+                else bb.plugins.deafbot.send(`You have **${f.data.receiving.length}** incoming requests: ${f.data.receiving.map(f => f.username).join(', ')}`);
+            });
+            break;
+        
+        case 'requested':
+        case 'outgoing':
+        case 'sending':
+            axios.get('/worker2/friends').then((f) => {
+                if (f.data.error) bb.plugins.deafbot.send(`Error fetching friends: **${f.data.reason}**`);
+                else bb.plugins.deafbot.send(`You have **${f.data.sending.length}** outgoing requests: ${f.data.sending.map(f => f.username).join(', ')}`);
+            });
+            break;
+
+        case 'mutual':
+            if (!args[1]) return bb.plugins.deafbot.send(`Tell me who you want to check for mutual friends, fool.`);
+
+            axios.get('/worker2/user/' + args[1]).then((f) => {
+                if (f.data.error) bb.plugins.deafbot.send(`Error: **${f.data.reason}**`);
+                else bb.plugins.deafbot.send(`You and **${f.data.user.username}** have **${f.data.user.friends.length}** mutual friends: ${f.data.user.friends.map(f => blacket.friends.friends.find(fr => fr.id === f)).map(a => a?.username).filter(a => a).join(', ')}`);
+            });
+            break;
+
         default:
             bb.plugins.deafbot.send(`Subcommands: **list** ~ **request** ~ **accept** ~ **remove** ~ **check**`);
             break;

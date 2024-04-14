@@ -10,7 +10,7 @@ export default ({
     required,
     disabled
 }) => {
-    if (!title || !authors?.length || (!onLoad && !onStart && !patches)) return console.error(`ERROR: Plugin does not have a title, authors, or executable functions.`);
+    if (!title || !authors?.length || (!onLoad && !onStart && !patches && !styles)) return console.error(`ERROR: Plugin does not have a title, authors, or executable functions.`);
     
     let plugin = {
         title,

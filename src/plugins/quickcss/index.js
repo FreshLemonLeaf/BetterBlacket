@@ -55,8 +55,6 @@ export default () => createPlugin({
         }
     `,
     onStart: () => {
-        console.log('Quick CSS started!');
-
         let storage = bb.storage.get('bb_pluginData', true);
 
         if ([

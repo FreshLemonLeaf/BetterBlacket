@@ -10,15 +10,18 @@ export default () => createPlugin({
             replacement: [
                 {
                     match: /id="\${randomUsernameId}"/,
-                    replace: ''
+                    replace: '',
+                    setting: 'Click 2 Clan'
                 },
                 {
                     match: /style="color: \${data\.author\.co/,
-                    replace: `id="\${randomUsernameId}" style="color: \${data.author.co`
+                    replace: `id="\${randomUsernameId}" style="color: \${data.author.co`,
+                    setting: 'Click 2 Clan'
                 },
                 {
                     match: /style="color: \${data\.author\.clan\.color};"/,
-                    replace: `onclick="window.open('/clans/discover?name=\${encodeURIComponent(data.author.clan.name)}');" style="color: \${data.author.clan.color};"`
+                    replace: `onclick="window.open('/clans/discover?name=\${encodeURIComponent(data.author.clan.name)}');" style="color: \${data.author.clan.color};"`,
+                    setting: 'Click 2 Clan'
                 },
                 {
                     match: /\$\{blacket\.config\.path !== "trade" \? `<div class="styles__contextMenuItemContainer___m3Xa3-camelCase" id="message-context-quote">/,
@@ -80,5 +83,9 @@ export default () => createPlugin({
             font-weight: 800;
             background-color: #3f3f3f;
         }
-    `
+    `,
+    settings: [{
+        name: 'Click 2 Clan',
+        default: true
+    }]
 });

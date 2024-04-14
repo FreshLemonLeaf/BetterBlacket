@@ -23,9 +23,18 @@ export default () => {
                             let filePatches = bb.patches.filter((e) => src.replace(location.origin, '').startsWith(e.file));
 
                             for (const patch of filePatches) for (const replacement of patch.replacement) {
-                                if (replacement.condition && !replacement.condition()) continue;
+                                if (replacement.setting) {
+                                    let settingActive = typeof bb.plugins.settings?.[patch.plugin]?.[replacement.setting] === 'boolean'
+                                        ? bb.plugins.settings?.[patch.plugin]?.[replacement.setting] ? true : false
+                                        : bb.plugins.list.find(p => p.title === patch.plugin).settings.find(s => s.name === replacement.setting) ? true : false;
 
-                                const matchRegex = new RegExp(replacement.match, 'g');
+                                    if (!settingActive) {
+                                        console.log('Setting', replacement.setting, 'is not active, ignoring...');
+                                        continue;
+                                    } else console.log('Setting', replacement.setting, 'is active, applying...');
+                                };
+
+                                const matchRegex = new RegExp(replacement.match, 'gm');
                                 if (!matchRegex.test(data)) {
                                     console.log(`Patch did nothing! Plugin: ${patch.plugin}; Regex: \`${replacement.match}\`.`);
                                     continue;

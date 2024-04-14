@@ -13,7 +13,12 @@ export default () => createPlugin({
                     replace: `
                         $("#messages").html(user.misc.messages.toLocaleString());
                         $("#stat_id").html(user.id);
-                        $("#stat_created").html((new Date(user.created * 1000).getUTCMonth() + 1) + '/' + new Date(user.created * 1000).getUTCDate() + '/' + new Date(user.created * 1000).getUTCFullYear().toString().split('20')[1]);
+                        $("#stat_created").html(new Date(user.created * 1000).toLocaleString('en-US', {
+                            year: '2-digit',
+                            month: '2-digit',
+                            day: '2-digit',
+                            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                        }));
                         $("#stat_lastonline").removeAttr('timestamped');
                         $("#stat_lastonline").text(\`<t:\${user.modified}:R>\`);
                     `
@@ -22,8 +27,6 @@ export default () => createPlugin({
         }
     ],
     onLoad: () => {
-        console.log('Extra Stats loaded!');
-
         if (location.pathname.startsWith('/stats')) document.querySelector('.styles__statsContainer___QnrRB-camelCase').insertAdjacentHTML('afterend', `
             <div class="styles__statsContainer___QnrRB-camelCase">
                 <div class="styles__containerHeader___3xghM-camelCase">

@@ -130,7 +130,7 @@ export default () => createPlugin({
 
             let speedModal = new bb.Modal({
                 title: 'Mass Open',
-                description: 'note: default is 1.2k, recommended is around 1k',
+                description: 'note: recommended is around 700',
                 inputs: [{ placeholder: 'Speed' }],
                 buttons: [{ text: 'Next' }, { text: 'Cancel' }]
             });

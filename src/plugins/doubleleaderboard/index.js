@@ -33,7 +33,7 @@ export default () => createPlugin({
         }
     ],
     onStart: () => {
-        document.body.insertAdjacentHTML('beforeend', `<style>
+        if (location.pathname.includes('leaderboard')) document.body.insertAdjacentHTML('beforeend', `<style>
             .styles__statsContainer___QnrRB-camelCase > div:nth-child(3) {
                 display: flex;
                 gap: 2vw;

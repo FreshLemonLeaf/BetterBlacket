@@ -3,7 +3,7 @@ import createPlugin from '#utils/createPlugin';
 
 export default () => createPlugin({
     title: 'Blook Utilities',
-    description: 'enhances the blooks page like never before.',
+    description: 'enhances the blook manager experience.',
     authors: [{ name: 'Death', avatar: 'https://i.imgur.com/PrvNWub.png', url: 'https://villainsrule.xyz' }],
     patches: [
         {
@@ -18,8 +18,8 @@ export default () => createPlugin({
                     replace: 'window.packBlooks'
                 },
                 {
-                    match: /style='background-color: #[0-9a-fA-F]+;'>List<\/div>/,
-                    replace: `style='background-color: #2f2f2f;'>Next</div>`
+                    match: />List<\/div>/,
+                    replace: `>Next</div>`
                 },
                 {
                     match: /blacket\.listBlook\(\$\(.*?\)\.val\(\)\);/,
@@ -74,8 +74,6 @@ export default () => createPlugin({
         }
     ],
     onStart: () => {
-        console.log('Blook Utilities started!');
-
         if (!location.pathname.startsWith('/blooks')) return;
 
         blacket.listBlook = (price) => {

@@ -27,7 +27,6 @@ export default async (single) => {
 
             const themeStyle = document.createElement('style');
             themeStyle.id = `bb-theme-${btoa(Math.random().toString(36).slice(2))}`;
-            if (meta.autoImportant === 'true' || !meta.autoImportant) data = data.replaceAll(/([^;{}]*:[^;{}]*);/g, '$1 !important;');
             themeStyle.innerHTML = data;
 
             bb.themes.list.push({
