@@ -3199,7 +3199,10 @@ const commands = {
 const index$c = () => createPlugin({
   title: "DeafBot",
   description: "the chatbot you know and love.",
-  authors: [{ name: "Death", avatar: "https://i.imgur.com/PrvNWub.png", url: "https://villainsrule.xyz" }],
+  authors: [
+    { name: "Death", avatar: "https://i.imgur.com/PrvNWub.png", url: "https://villainsrule.xyz" },
+    { name: "Syfe", avatar: "https://i.imgur.com/OKpOipQ.gif", url: "https://github.com/ItsSyfe" }
+  ],
   patches: [
     {
       file: "/lib/js/game.js",
@@ -3228,9 +3231,37 @@ const index$c = () => createPlugin({
   ],
   onLoad: () => {
     bb.plugins.deafbot = {
-      send: (msg) => {
+      send: (msg, ephemeral = false) => {
         let prefix = "**$ sudo node deafbot.js** > > > ";
+        if (ephemeral)
+          return bb.plugins.deafbot.ephemeralSend(prefix + msg);
         blacket.sendMessage(blacket.chat.room, prefix + msg, true);
+      },
+      ephemeralSend: (msg) => {
+        const data = {
+          room: {
+            id: blacket.chat.room
+          },
+          author: {
+            id: "2817136",
+            username: "DeafBot",
+            permissions: ["use_chat_colors", "use_embeds", "use_blook_emojis"],
+            avatar: "https://blacket.org/content/logo.png",
+            clan: {
+              id: "-0",
+              name: "Better Blacket"
+            }
+          },
+          message: {
+            id: Math.floor(Math.random() * 99999999),
+            content: msg,
+            edited: {
+              edited: false
+            },
+            deleted: false
+          }
+        };
+        blacket.appendChat(data, true);
       },
       commands
     };
